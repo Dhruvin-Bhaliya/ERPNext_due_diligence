@@ -9,12 +9,15 @@ app_color = "grey"
 app_email = "dipesh@offshoreevolution.com"
 app_license = "MIT"
 
+
+fixtures = ["Custom Field"]
+
 # Includes in <head>
 # ------------------
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/due_diligence/css/due_diligence.css"
-# app_include_js = "/assets/due_diligence/js/due_diligence.js"
+# app_include_js = "/public/js/custom_quotation.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/due_diligence/css/due_diligence.css"
@@ -31,7 +34,7 @@ app_license = "MIT"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Quotation" : "public/js/doctype_js/custom_quotation.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -95,13 +98,14 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Quotation": {
+		# "on_submit": "due_diligence.attach_pdf.attach_pdf",
+		"on_submit": "due_diligence.attach_pdf.attach_pdf",
+		# "on_cancel": "method",
+		# "on_trash": "method"
+	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -186,3 +190,7 @@ user_data_fields = [
 # Recommended only for DocTypes which have limited documents with untranslated names
 # For example: Role, Gender, etc.
 # translated_search_doctypes = []
+
+standard_portal_menu_items = [
+	{"title": ("Proposal Signing"), "route": "/proposal"},
+]
