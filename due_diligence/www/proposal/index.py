@@ -52,11 +52,15 @@ def send_mail_on_acceptance_or_decline(doctype, name, accept_or_decline_by, acti
     	}
     redirect_url = frappe.utils.get_url()
     
+    quotationDoc = frappe.get_doc("Quotation", name)
+    docAsDict = quotationDoc.as_dict()
+    
 
     if (action == 'accept'):
         customer_email = frappe.db.get_value(doctype, name, 'contact_email')
         email_template = frappe.db.get_single_value("Due Diligence Settings", "accepted_email_template")
         email_subject, email_body = frappe.db.get_value("Email Template", email_template, ["subject", "response"])
+        email_body = frappe.render_template(email_body, docAsDict)
         recipients =  customer_email
         email_cc = frappe.db.get_single_value("Due Diligence Settings", "email_cc")
         # doc = frappe.get_doc("Quotation", name)
