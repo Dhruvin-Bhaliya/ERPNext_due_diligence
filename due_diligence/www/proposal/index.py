@@ -69,6 +69,7 @@ def send_mail_on_acceptance_or_decline(doctype, name, accept_or_decline_by, acti
     elif(action == 'decline'):
         email_template = frappe.db.get_single_value("Due Diligence Settings", "decline_email_template")
         email_subject, email_body = frappe.db.get_value("Email Template", email_template, ["subject", "response"])
+        email_body = frappe.render_template(email_body, docAsDict)
         recipients =  frappe.db.get_value("Due Diligence", {'quotation': name},["sender_email"])
         attachments = ''
         email_cc = ''
