@@ -10,7 +10,10 @@
   "accepted_email_template",
   "decline_email_template",
   "email_cc",
-  "url_expiry_days"
+  "url_expiry_days",
+  "user_api_settings_section",
+  "username",
+  "password"
  ],
  "fields": [
   {
@@ -40,12 +43,31 @@
    "fieldname": "url_expiry_days",
    "fieldtype": "Data",
    "label": "URL Expiry Days"
+  },
+  {
+   "fieldname": "user_api_settings_section",
+   "fieldtype": "Section Break",
+   "label": "User API Settings"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Username",
+   "reqd": 1
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Password",
+   "in_list_view": 1,
+   "label": "Password",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-10-17 10:20:14.169257",
+ "modified": "2022-10-20 10:54:08.339881",
  "modified_by": "Administrator",
  "module": "Due Diligence",
  "name": "Due Diligence Settings",

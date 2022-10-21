@@ -9,23 +9,24 @@ from frappe import _
 from frappe.core.doctype.communication.email import make
 from frappe.utils.file_manager import get_file_path
 from frappe.utils import encode
-from frappe.utils import today
+from frappe.utils import today, getdate
 from datetime import datetime
 
 no_cache = 1
-    
+
 @frappe.whitelist(allow_guest = True)
 def get_content(doctype, name, format=None):
-    diligence = frappe.db.get_list("Due Diligence", filters={'quotation': name, 'diligence_status':'Sent'}, fields=['name','url_expiry_date'], as_list=1)
-    url_expiry_date = frappe.db.get_value("Due Diligence", {'quotation': name, 'diligence_status': 'Sent'}, ["url_expiry_date"])
-    date_string = url_expiry_date.strftime('%Y-%m-%d')
-
-    current_date = today()
-    # return
-    if (date_string <= current_date):
-        return {'status': False, 'Msg': 'URL is Expired !', 'getURL': frappe.utils.get_url()}
+    due_diligence = frappe.db.get_list("Due Diligence", filters={'quotation': name, 'diligence_status':'Sent'}, fields=['name'])
+    diligence = frappe.db.get_all("Due Diligence", filters={'quotation': name, 'diligence_status':'Sent'}, as_list=1)
+    diligence = diligence[2:23]
+    diligence_name = frappe.get_doc("Due Diligence", diligence)
+    url_expiry_date = diligence_name.url_expiry_date
+    current_date = getdate()
+    diligence_status = diligence_name.diligence_status
+    if(current_date >= url_expiry_date):
+        return {'status': False, 'Msg': 'URL is Expired !', 'getURL': frappe.utils.get_url(), 'diligence_status':diligence_status}
     else:
-        if diligence:
+        if due_diligence:
             file_name = name+".pdf"
             get_file_id = frappe.db.get_value("File",{"file_name": file_name}, ["name"])
             file = frappe.get_doc("File", get_file_id)
@@ -33,7 +34,7 @@ def get_content(doctype, name, format=None):
             getFileURL = frappe.utils.get_url() + file.file_url
             return {'status': True, 'getURL': getFileURL}
         else:
-            return {'status': False, 'getURL': frappe.utils.get_url()}
+            return {'status': False, 'getURL': frappe.utils.get_url(), 'diligence_status': diligence_status}
 
    
 @frappe.whitelist(allow_guest = True)
